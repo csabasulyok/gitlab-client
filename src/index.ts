@@ -1,28 +1,19 @@
-import extol from 'extol';
+import GitLabApiBase from './base';
+import { ProjectApi, ProjectsApi } from './project';
 
 /**
  * Fetcher class around invoking GitLab API calls
  */
-export class GitLabApi {
-  /**
-   * Base GitLab API URL
-   * Defaul: gitlab.com API URL
-   * Override by GITLAB_API_BASE env var/.env entry
-   */
-  @extol('https://gitlab.com/api/v4')
-  gitlabApiBase: string;
+export class GitLabApi extends GitLabApiBase {
+  projects: ProjectsApi = new ProjectsApi();
 
-  /**
-   * API token used in authorization to GitLab API
-   * No default, should be set.
-   * Override by GITLAB_API_TOKEN env var/.env entry
-   */
-  @extol('https://gitlab.com/api/v4')
-  gitlabApiToken: string;
+  project(projectId: number | string): ProjectApi {
+    return this.projects.byId(projectId);
+  }
 }
 
 /**
  * Default instance
  */
-const gitlabApi = new GitLabApi();
-export default gitlabApi;
+const gitlab = new GitLabApi();
+export default gitlab;

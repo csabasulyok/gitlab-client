@@ -1,14 +1,11 @@
-import { Readable } from 'stream';
+import { ProjectImportDto } from '../dto/project';
 import GitLabApiBase from './base';
+import { ProjectMemberApi, ProjectMembersApi } from './projectmember';
+import { MergeRequestApi, MergeRequestsApi } from './projectmergerequest';
 
-export type ImportDescription = {
-  namespace?: number | string;
-  name?: string;
-  file: Readable;
-  path: string;
-  overwrite?: boolean;
-};
-
+/**
+ * /projects/:projectId API
+ */
 export class ProjectApi extends GitLabApiBase {
   protected projectId: number | string;
 
@@ -17,6 +14,10 @@ export class ProjectApi extends GitLabApiBase {
     super(`/projects/${urlSafeProjectId}`);
     this.projectId = urlSafeProjectId;
   }
+
+  /**
+   * Direct
+   */
 
   async exists(): Promise<boolean> {
     try {
@@ -33,14 +34,37 @@ export class ProjectApi extends GitLabApiBase {
   delete(): Promise<void> {
     return this.axios.delete('');
   }
+
+  /**
+   * Sub
+   */
+
+  mergeRequests(): MergeRequestsApi {
+    return new MergeRequestsApi(this.projectId);
+  }
+
+  mergeRequest(mergeRequestIid: number): MergeRequestApi {
+    return new MergeRequestApi(this.projectId, mergeRequestIid);
+  }
+
+  members(): ProjectMembersApi {
+    return new ProjectMembersApi(this.projectId);
+  }
+
+  member(userId: number): ProjectMemberApi {
+    return new ProjectMemberApi(this.projectId, userId);
+  }
 }
 
+/**
+ * /projects API
+ */
 export class ProjectsApi extends GitLabApiBase {
   constructor() {
     super('/projects');
   }
 
-  import(description: ImportDescription): Promise<void> {
+  import(description: ProjectImportDto): Promise<void> {
     return this.axios.post('/import', description);
   }
 

@@ -10,6 +10,7 @@ npm i gitlab-client
 
 1. Set `GITLAB_API_TOKEN` environment variable to a valid one.
 2. (Optional) Set `GITLAB_API_BASE` to a custom URL, if not using `https://gitlab.com/api/v4`
+3. (Optional) Set `LOG_GITLAB_REQUESTS` to a boolean representing whether or not to log requests
 
 # Examples
 

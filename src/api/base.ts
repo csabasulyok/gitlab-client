@@ -22,11 +22,11 @@ export default abstract class GitLabApiBase {
 
   /**
    * Set flag to log all requests sent by axios.
-   * Can be set to boolean string, LOG_REQUESTS=false
+   * Can be set to boolean string, LOG_GITLAB_REQUESTS=false
    * Defaults to true.
    */
   @extol(true)
-  logRequests: boolean;
+  logGitlabRequests: boolean;
 
   /**
    * Axios fetcher instance
@@ -44,7 +44,7 @@ export default abstract class GitLabApiBase {
     });
 
     this.axios.interceptors.request.use(axiosFormData);
-    if (this.logRequests) {
+    if (this.logGitlabRequests) {
       yallAxiosConnect(this.axios);
     }
   }
